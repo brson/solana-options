@@ -1,7 +1,7 @@
 const assert = require("assert");
 const anchor = require("@project-serum/anchor");
 
-describe("controller", () => {
+describe("broker", () => {
   // Use a local provider.
   const provider = anchor.Provider.local();
 
@@ -10,7 +10,7 @@ describe("controller", () => {
 
   it("Creates and initializes an account in two different transactions", async () => {
     // The program owning the account to create.
-    const program = anchor.workspace.Controller;
+    const program = anchor.workspace.Broker;
 
     // The Account to create.
     const myAccount = anchor.web3.Keypair.generate();
@@ -54,7 +54,7 @@ describe("controller", () => {
 
   it("Creates and initializes an account in a single atomic transaction", async () => {
     // The program to execute.
-    const program = anchor.workspace.Controller;
+    const program = anchor.workspace.Broker;
 
     // #region code
     // The Account to create.
@@ -90,7 +90,7 @@ describe("controller", () => {
 
   it("Creates and initializes an account in a single atomic transaction (simplified)", async () => {
     // The program to execute.
-    const program = anchor.workspace.Controller;
+    const program = anchor.workspace.Broker;
 
     // The Account to create.
     const myAccount = anchor.web3.Keypair.generate();
@@ -123,7 +123,7 @@ describe("controller", () => {
     // #region update-test
 
     // The program to execute.
-    const program = anchor.workspace.Controller;
+    const program = anchor.workspace.Broker;
 
     // Invoke the update rpc.
     await program.rpc.update(new anchor.BN(4321), {

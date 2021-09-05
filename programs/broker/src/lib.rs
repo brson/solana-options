@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 
 #[program]
-mod controller {
+mod broker {
     use super::*;
 
     pub fn initialize(ctx: Context<Initialize>, data: u64) -> ProgramResult {
