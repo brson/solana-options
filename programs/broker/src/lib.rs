@@ -20,8 +20,14 @@ mod broker {
 
 
 
-    /// If the token already exists then this instruction does nothing.
-    pub fn create_contract_token(ctx: Context<CreateContractToken>, data: CreateContractTokenData) -> ProgramResult {
+    /// If the token already exists then this instruction does nothing and
+    /// returns the existing token's account.
+    pub fn create_contract_token(ctx: Context<CreateContractToken>, desc: ContractTokenDesc) -> Result<Pubkey, ProgramError> {
+        #![allow(unused)]
+        panic!()
+    }
+
+    pub fn get_contract_token(ctx: Context<GetContractToken>, desc: ContractTokenDesc) -> Result<Option<Pubkey>, ProgramError> {
         #![allow(unused)]
         panic!()
     }
@@ -35,10 +41,17 @@ pub struct BrokerAccount {
 pub struct CreateContractToken<'info> {
     #[account(mut)]
     pub broker_account: ProgramAccount<'info, BrokerAccount>,
+    pub payer: AccountInfo<'info>,
+}
+
+#[derive(Accounts)]
+pub struct GetContractToken<'info> {
+    #[account(mut)]
+    pub broker_account: ProgramAccount<'info, BrokerAccount>,
 }
 
 #[derive(AnchorSerialize, AnchorDeserialize)]
-pub struct CreateContractTokenData {
+pub struct ContractTokenDesc {
     underlying_serum_market: Pubkey,
     expiration_slot: Slot,
     strike_price: u64,
