@@ -21,7 +21,6 @@ mod broker {
 
 
 
-
     /// If the token already exists then this instruction does nothing and
     /// returns the existing token's account.
     pub fn create_contract_token(ctx: Context<CreateContractToken>, desc: ContractTokenDesc) -> Result<Pubkey, ProgramError> {
@@ -31,7 +30,6 @@ mod broker {
     pub fn get_contract_token(ctx: Context<GetContractToken>, desc: ContractTokenDesc) -> Result<Option<Pubkey>, ProgramError> {
         panic!()
     }
-
 
     /// Mint new options tokens by depositing collateral.
     ///
@@ -61,6 +59,7 @@ mod broker {
 
 #[account]
 pub struct BrokerAccount {
+    dummy: u32,
 }
 
 #[derive(Accounts)]
@@ -79,7 +78,7 @@ pub struct GetContractToken<'info> {
 #[derive(AnchorSerialize, AnchorDeserialize)]
 pub struct ContractTokenDesc {
     pub underlying_serum_market: Pubkey,
-    pub expiration_slot: Slot,
+    pub expiration_slot: u64, /* fixme should be Slot but doesn't work with anchor */
     pub strike_price: u64,
     pub kind: ContractKind,
 }
