@@ -2,12 +2,47 @@ const assert = require("assert");
 const anchor = require("@project-serum/anchor");
 
 describe("broker", () => {
-  // Use a local provider.
-  const provider = anchor.Provider.local();
+    // Use a local provider.
+    const provider = anchor.Provider.local();
 
-  // Configure the client to use the local cluster.
-  anchor.setProvider(provider);
+    // Configure the client to use the local cluster.
+    anchor.setProvider(provider);
 
+    const brokerAccountSize = 8 + 8;
+
+    it("Initializes", async () => {
+        let program = anchor.workspace.Broker;
+        let brokerAccount = anchor.web3.Keypair.generate();
+
+        let balance = await provider.connection.getMinimumBalanceForRentExemption(brokerAccountSize);
+
+        let tx = new anchor.web3.Transaction();
+        tx.add(
+            anchor.web3.SystemProgram.createAccount({
+                fromPubkey: provider.wallet.publicKey,
+                newAccountPubkey: brokerAccount.publicKey,
+                space: brokerAccountSize,
+                lamports: balance,
+                programId: program.programId,
+            })
+        );
+
+        await provider.send(tx, [brokerAccount]);
+
+        await program.rpc.initialize({
+            accounts: {
+                brokerAccount: brokerAccount.publicKey,
+            }
+        });
+
+        let account = await program.account.brokerAccount.fetch(brokerAccount.publicKey);
+
+        console.log(account);
+        assert.ok(account.dummy == new anchor.BN(5));
+    });
+
+
+/*    
   it("Creates and initializes an account in two different transactions", async () => {
     // The program owning the account to create.
     const program = anchor.workspace.Broker;
@@ -140,4 +175,6 @@ describe("broker", () => {
 
     // #endregion update-test
   });
+
+*/
 });

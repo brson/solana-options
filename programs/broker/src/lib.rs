@@ -7,19 +7,11 @@ use anchor_lang::solana_program::clock::Slot;
 mod broker {
     use super::*;
 
-    pub fn initialize(ctx: Context<Initialize>, data: u64) -> ProgramResult {
-        let my_account = &mut ctx.accounts.my_account;
-        my_account.data = data;
+    pub fn initialize(ctx: Context<Initialize>) -> ProgramResult {
+        let broker_account = &mut ctx.accounts.broker_account;
+        broker_account.dummy = 5;
         Ok(())
     }
-
-    pub fn update(ctx: Context<Update>, data: u64) -> ProgramResult {
-        let my_account = &mut ctx.accounts.my_account;
-        my_account.data = data;
-        Ok(())
-    }
-
-
 
     /// If the token already exists then this instruction does nothing and
     /// returns the existing token's account.
@@ -63,6 +55,12 @@ pub struct BrokerAccount {
 }
 
 #[derive(Accounts)]
+pub struct Initialize<'info> {
+    #[account(zero)]
+    pub broker_account: ProgramAccount<'info, BrokerAccount>,
+}
+
+#[derive(Accounts)]
 pub struct CreateContractToken<'info> {
     #[account(mut)]
     pub broker_account: ProgramAccount<'info, BrokerAccount>,
@@ -98,26 +96,4 @@ pub struct RedeemContractTokens<'info> {
     #[account(mut)]
     pub broker_account: ProgramAccount<'info, BrokerAccount>,
     pub user_account: AccountInfo<'info>,
-}
-
-
-
-
-
-
-#[derive(Accounts)]
-pub struct Initialize<'info> {
-    #[account(zero)]
-    pub my_account: ProgramAccount<'info, MyAccount>,
-}
-
-#[derive(Accounts)]
-pub struct Update<'info> {
-    #[account(mut)]
-    pub my_account: ProgramAccount<'info, MyAccount>,
-}
-
-#[account]
-pub struct MyAccount {
-    pub data: u64,
 }
