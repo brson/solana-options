@@ -38,7 +38,7 @@ describe("broker", () => {
         let account = await program.account.brokerAccount.fetch(brokerAccount.publicKey);
 
         console.log(account);
-        assert.ok(account.dummy == new anchor.BN(5));
+        assert.ok(account.dummy.eq(new anchor.BN(5)));
     });
 
 

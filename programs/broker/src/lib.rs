@@ -51,7 +51,7 @@ mod broker {
 
 #[account]
 pub struct BrokerAccount {
-    dummy: u32,
+    dummy: u64,
 }
 
 #[derive(Accounts)]
