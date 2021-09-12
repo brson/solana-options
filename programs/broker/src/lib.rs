@@ -31,6 +31,12 @@ mod broker {
             return Ok(token_pubkey);
         }
 
+        // Create the account
+
+        // Ask system program to create a token for that account
+
+        // Store the contract description and the bump seed in the account
+
         todo!()
     }
 
