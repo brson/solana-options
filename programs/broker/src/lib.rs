@@ -16,7 +16,22 @@ mod broker {
     /// If the token already exists then this instruction does nothing and
     /// returns the existing token's account.
     pub fn create_contract_token(ctx: Context<CreateContractToken>, desc: ContractTokenDesc) -> Result<Pubkey, ProgramError> {
-        panic!()
+
+        // Derive token account seed
+        let mut desc_buf = Vec::new();
+        desc.serialize(&mut desc_buf)?;
+        let seeds = &[b"contract-token", desc_buf.as_slice()];
+
+        // Derive token account
+        let (token_pubkey, bump_seed) = Pubkey::find_program_address(seeds, ctx.program_id);
+
+        // Does the token already exist?
+        let token_exists = todo!();
+        if token_exists {
+            return Ok(token_pubkey);
+        }
+
+        todo!()
     }
 
     pub fn get_contract_token(ctx: Context<GetContractToken>, desc: ContractTokenDesc) -> Result<Option<Pubkey>, ProgramError> {
